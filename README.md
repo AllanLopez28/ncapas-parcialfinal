@@ -65,3 +65,88 @@ _Si van a crear mas endpoints como el login o registrarse recuerden actualizar p
 - [ ] Probar todos los flujos con Postman/Insomnia/Bruno.
 - [ ] Mostrar que los roles se comportan correctamente.
 - [ ] Incluir usuarios de prueba (`user`, `tech`) y contraseñas.
+
+
+# Sistema de Soporte Técnico  
+**Parcial Final – Programación N-Capas (Spring Security + JWT + Docker)**  
+
+> Simula un sistema donde los usuarios finales crean *tickets* de soporte y los técnicos los gestionan.  
+> Incluye autenticación JWT, autorización por roles (`USER`, `TECH`) y despliegue con Docker Compose.
+
+---
+
+---
+
+## Tecnologías
+
+| Capa | Herramientas |
+|------|--------------|
+| Backend | Spring Boot 3.5, Spring Data JPA, Spring Security, JWT (jjwt 0.11), Lombok |
+| Base de datos | PostgreSQL 15 |
+| Contenerización | Docker 23 y Docker Compose v2 |
+| Documentación API | Springdoc OpenAPI 2 |
+| Build | Maven 3.9 (JDK 21) |
+
+---
+
+## Requisitos previos
+
+* **JDK 21** (para ejecución local)  
+* **Maven ≥3.9**  
+* **Docker Desktop** (si usarás contenedores)  
+
+---
+
+## Seguridad (JWT)
+
+* **/auth/login**  
+  *Recibe* `correo` y `password` → Autentica con `AuthenticationManager`.  
+  *Devuelve* token **Bearer** firmado SHA-256, válido `jwt.expirationMs` (ms).  
+* Un filtro `JwtAuthenticationFilter` inspecciona cada petición:
+  1. Extrae token del header `Authorization: Bearer …`  
+  2. Lo valida y recupera el usuario  
+  3. Inserta la autenticación en el `SecurityContext`  
+
+---
+
+## Roles y permisos
+
+| Rol  | Permisos principales |
+|------|----------------------|
+| **USER** | • Crear tickets<br>• Ver **solo** sus tickets |
+| **TECH** | • Ver **todos** los tickets<br>• Cambiar estado<br>• Editar/eliminar tickets<br>• CRUD de usuarios |
+
+Las restricciones se aplican vía `@PreAuthorize` en los controladores y filtros.
+
+---
+
+## API REST
+
+| Método | Ruta | Rol | Descripción |
+|--------|------|-----|-------------|
+| `POST` | `/auth/login` | Público | Login, devuelve JWT |
+| `POST` | `/api/tickets` | USER | Crear ticket |
+| `GET` | `/api/tickets` | USER / TECH | USER: propios · TECH: todos |
+| `GET` | `/api/tickets/{id}` | USER / TECH | Detalle (USER solo propio) |
+| `PUT` | `/api/tickets` | TECH | Actualizar estado/detalle |
+| `DELETE` | `/api/tickets/{id}` | TECH | Eliminar ticket |
+| `GET` | `/api/users/all` | TECH | Listar usuarios |
+| `POST` | `/api/users` | TECH | Crear usuario |
+| … | … | … | Resto de CRUD de usuarios |
+
+> Consulta la colección Postman incluida para ejemplos de cuerpo y headers.
+
+---
+
+## Variables de entorno
+
+| Variable | Predeterminado | Uso |
+|----------|----------------|-----|
+| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/supportdb` | Cadena JDBC |
+| `SPRING_DATASOURCE_USERNAME` | `postgres` | Usuario BD |
+| `SPRING_DATASOURCE_PASSWORD` | `root` | Contraseña BD |
+| `JWT_SECRET` (o `jwt.secret` en `yml`) | `MiSuperSecretoParaJWT...` | Clave de firma |
+| `JWT_EXPIRATION_MS` | `3600000` | Tiempo de vida del token |
+
+---
+
