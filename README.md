@@ -5,7 +5,7 @@ Este repositorio contiene un proyecto para evaluar y practicar los conceptos de 
 ### Estudiantes
 - **Nombre del estudiante 1**: Julio Alberto Rodriguez Valencia - 00163922
 - **Nombre del estudiante 2**: Allan Josue Lopez Escalante - 00049222
-- Sección: 01
+- Sección: 02
 ---
 
 ## Sistema de Soporte Técnico
