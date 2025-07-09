@@ -144,7 +144,7 @@ Las restricciones se aplican vía `@PreAuthorize` en los controladores y filtros
 |----------|----------------|-----|
 | `SPRING_DATASOURCE_URL` | `jdbc:postgresql://localhost:5432/supportdb` | Cadena JDBC |
 | `SPRING_DATASOURCE_USERNAME` | `postgres` | Usuario BD |
-| `SPRING_DATASOURCE_PASSWORD` | `root` | Contraseña BD |
+| `SPRING_DATASOURCE_PASSWORD` | `admin` | Contraseña BD |
 | `JWT_SECRET` (o `jwt.secret` en `yml`) | `MiSuperSecretoParaJWT...` | Clave de firma |
 | `JWT_EXPIRATION_MS` | `3600000` | Tiempo de vida del token |
 
