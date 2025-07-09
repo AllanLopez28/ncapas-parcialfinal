@@ -2,8 +2,12 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/supportdb
     username: postgres
-    password: root
+    password: admin
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: true  # :contentReference[oaicite:0]{index=0}
+
+jwt:
+  secret: MiSuperSecretoParaJWTQueDebeSerMuyLargoYSeguro123!
+  expirationMs: 3600000
